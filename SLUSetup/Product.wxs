@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="34E2F296-4884-4F82-B4D7-BC9AA1769E8D" Name="Sym Link Utility" Language="1033" Version="1.1.0.0" Manufacturer="Giovanni Stefanelli (jpsdzn@gmail.com)" UpgradeCode="eb2602ef-ec92-4d03-beb7-507bd7f31b61">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of Symlink Utility is already installed." />
+		<MediaTemplate  EmbedCab="yes"/>
+
+		<Feature Id="ProductFeature" Title="SLUSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="SymlinkUtil" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER" Source="..\SymLinkUtility\bin\Release">
+			<Component Id="Executable" Guid="4EF168C2-05B3-4CA9-86C5-0F7A86B39FC1">
+				<File KeyPath="yes" Name="slu.exe" />
+				<File Name="Microsoft.WindowsAPICodePack.dll" />
+				<File Name="Microsoft.WindowsAPICodePack.Shell.dll" />
+			</Component>
+			<Component Id="RegistryEntries" Guid="8F92451B-3DCD-43C2-A0CE-214F4E658B83">
+				<RegistryKey Root="HKCR"
+										 Key="Directory\Background\shell\SymLinkUtilStart">
+					<RegistryValue Type="string" Value="Create symbolic link here" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-s" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="Directory\Background\shell\SymLinkUtilEnd">
+					<RegistryValue Type="string" Value="Use as symbolic link end/target" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-e" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="Directory\shell\SymLinkUtilStart">
+					<RegistryValue Type="string" Value="Create symbolic link here (directory)" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-s" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="Directory\shell\SymLinkUtilStartFile">
+					<RegistryValue Type="string" Value="Create symbolic link here (file)" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-d" "-s" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="Directory\shell\SymLinkUtilEnd">
+					<RegistryValue Type="string" Value="Use as symbolic link end/target" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-e" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="DesktopBackground\shell\SymLinkUtilStart">
+					<RegistryValue Type="string" Value="Create symbolic link here" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-s" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root="HKCR"
+										 Key="DesktopBackground\shell\SymLinkUtilEnd">
+					<RegistryValue Type="string" Value="Use as symbolic link end/target" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-e" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+				<RegistryKey Root='HKCR'
+										Key="*\shell\SymLinkUtilEnd">
+					<RegistryValue Type="string" Value="Use as symbolic link end/target" />
+					<RegistryKey Key="command">
+						<RegistryValue Type="string" Value='"[INSTALLFOLDER]\slu.exe" "-f" "-e" "%V"' />
+					</RegistryKey>
+				</RegistryKey>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
